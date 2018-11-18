@@ -6,10 +6,10 @@ The skeleton of this script has been obtained by exporting the Python code from 
 This would later allow to make the difference between the two acquisitions and extract only the carriers emitted by the board, canceling the effect of any background emission without the need of performing the tests inside e.g. an anechoic chamber. Unfortunately, due to the problems specified in the relative section, it is still necessary to make the two different acquisitions manually. The following sections will address the main issues and topics concerning this script.
 
 ### Source block
-During the development of this project the RTL-SDR dongle was used, therefore the relative GNU Radio block was employed in order to use the RTL-SDR dongle as source. This block is not installed with GNU Radio: the [Setup](setup) section explains how to add it to the GNU Radio library. It is important to point out that, should another antenna be used, it would be very easy to adapt the script in order to use the corresponding GNU Radio source block. Thanks to GNU Radio flexibility and ease of use, the script can be easily adapted to support any other antenna supported by GNU Radio - and in general any device which can be operated through Python code. 
+During the development of this project the RTL-SDR dongle was used, therefore the relative GNU Radio block was employed in order to use the RTL-SDR dongle as source. This block is not installed with GNU Radio: the [Setup](setup.md) section explains how to add it to the GNU Radio library. It is important to point out that, should another antenna be used, it would be very easy to adapt the script in order to use the corresponding GNU Radio source block. Thanks to GNU Radio flexibility and ease of use, the script can be easily adapted to support any other antenna supported by GNU Radio - and in general any device which can be operated through Python code. 
 
 ### Correction of 0 DC component
-The Fourier transform of any signal acquired with the RTL-SDR has a spurious spike in the center of the spectrum. This is the infamous DC offset, a common issue when using direct conversion receivers such as the RTL-SDR dongle[^1]. In order to solve this problem I resorted to the GNU Radio [correctiq block](https://github.com/ghostop14/gr-correctiq), which can be inserted after the source block in order to remove this unwanted component. Notice that this block is not automatically installed with GNU Radio. The [Setup](setup) section explains how to install this block.
+The Fourier transform of any signal acquired with the RTL-SDR has a spurious spike in the center of the spectrum. This is the infamous DC offset, a common issue when using direct conversion receivers such as the RTL-SDR dongle[^1]. In order to solve this problem I resorted to the GNU Radio [correctiq block](https://github.com/ghostop14/gr-correctiq), which can be inserted after the source block in order to remove this unwanted component. Notice that this block is not automatically installed with GNU Radio. The [Setup](setup.md) section explains how to install this block.
 
 ### Insertion of functions inside the GNU Radio class
 The original Python class generated via the GNU Radio Companion was expanded in order to add the possibility of modifying the name of the raw data output file. This allows to easily recognize which frequencies are covered by the raw data file which is being generated.
@@ -82,29 +82,29 @@ This way a new spectrum is obtained. This spectrum, in principle, contains only 
 
 In order to increase the SNR the power spectra were computed using Welch's method[^3]. This algorithm is provided by the Scipy Python library and consists in averaging several FFTs to augment the SNR in spite of a resolution loss. The algorithm divides the time domain data into several segments, which may or may not overlap, and evaluates the power spectrum for each of them. Then, the various power spectrum are added together and averaged. The overlap, if present, adds redundant data. The weight of this redundant data is diminished by applying a non rectangular window to the time domain data. The following picture shows the windows usually employed for this purpose.
 
-![windowfunction_time_domain](/uploads/d8a393ce4e4dd633ab609500755e581d/windowfunction_time_domain.png)
+![windowfunction_time_domain](./figures/windowfunction_time_domain.png)
 
 The most popular and most versatile window, when it comes to Welch's method, is the Hanning window, and is hence the one which has been used. The aforementioned resolution loss is due to the application of a non rectangular window and to the splitting of time domain data into smaller segments. In this framework, however, the resulting frequency resolution loss seemed acceptable, since in any case the time domain data for each recorded frequency range was large: a 1 s trace was was sampled at 2 MHz for each frequency range, therefore the number of samples for each frequency range amounted to 2x10^6.
 
 It was noticed that frequency emissions at the borders of the window could still be noticed, if reasonably high. In case the reader is skeptical, in any case, this issue can be completely bypassed by performing two analysis of the overall data, with the second analysis selecting as starting and ending frequency the previously chosen values plus half of the sampling frequency. In this way the frequencies which previously occupied the border of a Hamming window will occupy the center, hence guaranteeing that any emission in that range can be properly observed. The following two pictures should clarify what has clumsily been explained in the previous lines.
 
-![odd](/uploads/058b260e5f9b8343e7e1e6d7bd243584/odd.png)
+![odd](figures/odd.png)
 
-![even](/uploads/d7c8fbfdbf436de943ad8db6d6726fad/even.png)
+![even](figures/even.png)
 
 In spite of all these arguments, however, the sampling frequency or the acquisition time might vary in a different framework, hence this method might result not convenient any longer in such an occurrence, or, perhaps, the parameters used in this version will have to be varied.
 
 Back to the current implementation, after several tests, which were all but exhaustive, an optimum was found in using 16383 samples to compute each power spectrum with an overlap between segments of $`\frac{16383}{2}`$=8191 samples. The following pictures show the obtained power spectrum when using the adopted overlap size and no overlap at all (which is equivalent to using Bartlett's method[^4]).
 
-![noverlap](/uploads/7c5011f6f951a446d0dfa381b4daa749/noverlap.png)
+![noverlap](figures/noverlap.png)
 
-![rot](/uploads/6577e7580fe6007d5339f028c1dc7a3a/rot.png)
+![rot](figures/rot.png)
 
 The noise variance and magnitude is clearly reduced when adopting the aforementioned overlap. The FFT length was kept identical to the length of each segment, since a zero padded FFT served no purpose in the current framework. The detrend parameter was left to its original value, in order to remove the average of the input data and hence avoid the appearance of the unwanted 0 DC component. Lastly, the scaling parameter was left to 'density' in order to obtain the power spectral density.
 
 The following picture shows the output plot when performing the difference between the spectra of two sets of data between 80 and 86 MHz.
 
-![sub_test](/uploads/dbd36ae93c51f60ccf7a2f1279eb005c/sub_test.png)
+![sub_test](figures/sub_test.png)
 
 The result seems quite good, since the common frequencies have clearly been canceled. Only small peaks remain, which might or might not be related to electromagnetic emissions coming from the board. Since their magnitude is quite small the likelihood is low. However, the only way to make sure is to inspect this frequencies in real time and see if those carriers appear when putting the board close to the antenna.
 
