@@ -12,4 +12,4 @@ Moreover, as previously stated:
 * the `f1` and `f2` input parameters must not be asked if the `-l` input is specified, as the data concerning f<sub>0,min</sub> and f<sub>0,max</sub> comes directly from the .npz archive;
 * lastly, it might be a good idea to rewrite the `td` script in such a way that also other antennas can be used, not just the RTL-SDR dongle;
 
-In this section I wanted to pinpoint the most critical issues. Others might be present, of course. Should someone start working on these scripts the [afterwords](afterwords-and-credits) section contains my contact information in case of need of additional information or in case of doubts.
+In this section I wanted to pinpoint the most critical issues. Others might be present, of course. Should someone start working on these scripts the [afterwords](./afterwords-and-credits.md) section contains my contact information in case of need of additional information or in case of doubts.

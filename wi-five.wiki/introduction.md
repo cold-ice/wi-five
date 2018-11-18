@@ -6,7 +6,7 @@ Of course, when it comes to spectrum analysis the best solution is to use dedica
 
 While GNU Radio, for the time being, is a mandatory component of this project, the dongle can be switched in favor of any other one which is compatible with GNU Radio, if it needs be. In this case, the software presented in this repository will have to be modified to be able to use a different dongle to capture EM information. Two antennas were used: a standard telescopic antenna and a hand crafted one which is particularly suited for micro-probing.
 
-The [Setup](setup) section of this wiki guides the user through the installation procedures to be performed in order to be able to run the developed scripts. The other sections describe how the scripts have been developed, how they work and what could be done to improve them. A final section presents the experimental results obtained by analyzing the frequencies emitted by the SiFive board with the employed software and equipment.
+The [Setup](setup.md) section of this wiki guides the user through the installation procedures to be performed in order to be able to run the developed scripts. The other sections describe how the scripts have been developed, how they work and what could be done to improve them. A final section presents the experimental results obtained by analyzing the frequencies emitted by the SiFive board with the employed software and equipment.
 
 [^1]: Gandolfi K., Mourtel C., Olivier F. (2001) Electromagnetic Analysis: Concrete Results. In: Koç Ç.K., Naccache D., Paar C. (eds) Cryptographic Hardware and Embedded Systems — CHES 2001. CHES 2001. Lecture Notes in Computer Science, vol 2162. Springer, Berlin, Heidelberg
 

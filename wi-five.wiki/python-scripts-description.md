@@ -88,23 +88,23 @@ The most popular and most versatile window, when it comes to Welch's method, is 
 
 It was noticed that frequency emissions at the borders of the window could still be noticed, if reasonably high. In case the reader is skeptical, in any case, this issue can be completely bypassed by performing two analysis of the overall data, with the second analysis selecting as starting and ending frequency the previously chosen values plus half of the sampling frequency. In this way the frequencies which previously occupied the border of a Hamming window will occupy the center, hence guaranteeing that any emission in that range can be properly observed. The following two pictures should clarify what has clumsily been explained in the previous lines.
 
-![odd](figures/odd.png)
+![odd](./figures/odd.png)
 
-![even](figures/even.png)
+![even](./figures/even.png)
 
 In spite of all these arguments, however, the sampling frequency or the acquisition time might vary in a different framework, hence this method might result not convenient any longer in such an occurrence, or, perhaps, the parameters used in this version will have to be varied.
 
 Back to the current implementation, after several tests, which were all but exhaustive, an optimum was found in using 16383 samples to compute each power spectrum with an overlap between segments of $`\frac{16383}{2}`$=8191 samples. The following pictures show the obtained power spectrum when using the adopted overlap size and no overlap at all (which is equivalent to using Bartlett's method[^4]).
 
-![noverlap](figures/noverlap.png)
+![noverlap](./figures/noverlap.png)
 
-![rot](figures/rot.png)
+![rot](./figures/rot.png)
 
 The noise variance and magnitude is clearly reduced when adopting the aforementioned overlap. The FFT length was kept identical to the length of each segment, since a zero padded FFT served no purpose in the current framework. The detrend parameter was left to its original value, in order to remove the average of the input data and hence avoid the appearance of the unwanted 0 DC component. Lastly, the scaling parameter was left to 'density' in order to obtain the power spectral density.
 
 The following picture shows the output plot when performing the difference between the spectra of two sets of data between 80 and 86 MHz.
 
-![sub_test](figures/sub_test.png)
+![sub_test](./figures/sub_test.png)
 
 The result seems quite good, since the common frequencies have clearly been canceled. Only small peaks remain, which might or might not be related to electromagnetic emissions coming from the board. Since their magnitude is quite small the likelihood is low. However, the only way to make sure is to inspect this frequencies in real time and see if those carriers appear when putting the board close to the antenna.
 
