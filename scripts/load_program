@@ -1,0 +1,2 @@
+#!/bin/sh
+make -C /home/v/Documents/Eurecom/Project/board/freedom-e-sdk upload PROGRAM=addi
