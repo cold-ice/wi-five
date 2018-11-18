@@ -1,4 +1,4 @@
-This page describes how to use the Python scripts developed during this project. Please refer to the [Python scripts description](python-scripts-description) to understand how the scripts work and what needs to be improved.
+This page describes how to use the Python scripts developed during this project. Please refer to the [Python scripts description](python-scripts-description.md) to understand how the scripts work and what needs to be improved.
 
 ## td.py
 
